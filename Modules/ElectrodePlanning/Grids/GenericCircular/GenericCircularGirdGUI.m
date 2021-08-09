@@ -22,7 +22,7 @@ function varargout = GenericCircularGirdGUI(varargin)
 
 % Edit the above text to modify the response to help GenericCircularGirdGUI
 
-% Last Modified by GUIDE v2.5 03-Jan-2014 11:41:51
+% Last Modified by GUIDE v2.5 22-Jul-2021 21:20:26
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -859,3 +859,19 @@ end
 fprintf(hFileID,'</CONTAINER>\n');
 
 fclose(hFileID);
+
+
+% --- Executes on button press in hExportFreecad.
+function hExportFreecad_Callback(hObject, eventdata, handles)
+% hObject    handle to hExportFreecad (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+strctGridModel=getappdata(handles.figure1,'strctGridModel');
+strctGridName=getappdata(handles.figure1,'strctGridName');
+
+cd('FreeCAD');
+save([strctGridName '.mat'],'strctGridModel','strctGridName');
+[a, b] = system('python export_freeCAD.py', '-echo');
+
+
+

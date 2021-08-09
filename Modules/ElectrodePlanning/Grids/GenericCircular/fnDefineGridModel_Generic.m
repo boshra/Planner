@@ -3,12 +3,12 @@ function strctGridParam = fnDefineGridModel_Generic()
 
 % Define the default 0 deg grid that has 7 holes along the major axis
 
-strctGridParam.m_fMinimumDistanceBetweenHolesMM = 1;
-strctGridParam.m_fGridHoleDiameterMM = 0.75;
-strctGridParam.m_fGridInnerDiameterMM = 16.6;
-strctGridParam.m_fGridHeightMM = 10;
+strctGridParam.m_fMinimumDistanceBetweenHolesMM = 1.5;
+strctGridParam.m_fGridHoleDiameterMM = 1;
+strctGridParam.m_fGridInnerDiameterMM = 17.5; % (9.9 * 2) - 2
+strctGridParam.m_fGridHeightMM = 15;
 strctGridParam.m_fGridHeightAboveMM = 9;
-afCenter = -7:7;
+afCenter = -9:strctGridParam.m_fMinimumDistanceBetweenHolesMM:9;
 [a2fXc, a2fYc] = meshgrid(afCenter, afCenter);
 a2bFeasibleTop =  sqrt(a2fXc.^2 + a2fYc.^2) + strctGridParam.m_fGridHoleDiameterMM/2 < strctGridParam.m_fGridInnerDiameterMM/2;
 iNumHoles = sum(a2bFeasibleTop(:));
