@@ -1,0 +1,46 @@
+### create grid
+FreeCAD.openDocument('/Users/bichanwu/Desktop/CAD/Rober_code/chamber_base.FCStd')
+# App.newDocument("chamber_base")
+Gui.activeDocument().activeView().viewDefaultOrientation()
+App.activeDocument().addObject('Sketcher::SketchObject', 'Sketch_grid')
+
+### getting parameters for grids
+cylinder_r = 8.4
+cylinder_h = 10
+hole_r=0.5
+hole_d=1.5
+angle=40
+rotation=30
+
+sys.path.append('/Users/bichanwu/Desktop/CAD/')
+from util import cal_grid_center
+(x_mm,y_mm) = cal_grid_center(cylinder_r,cylinder_h,hole_r,hole_d,angle,rotation)
+
+
+for x, y in zip(x_mm, y_mm):
+	App.activeDocument().getObject('Sketch_grid').addGeometry(Part.Circle(App.Vector(x,y,0),App.Vector(0,0,1),hole_r),False)
+
+### extrude grid to 3D
+import math
+App.activeDocument().addObject('Part::Extrusion','Extrude')
+f = App.activeDocument().getObject('Extrude')
+f.Base = App.activeDocument().getObject('Sketch_grid')
+f.DirMode = "Custom"
+f.Dir = App.Vector(math.tan(angle*math.pi/180)*math.cos(rotation*math.pi/180), math.tan(angle*math.pi/180)*math.sin(rotation*math.pi/180), 1)
+f.LengthFwd = cylinder_h / math.cos(angle*math.pi/180)
+f.Solid = True
+App.activeDocument().getObject('Sketch_grid').Visibility = False
+FreeCAD.activeDocument().getObject('Extrude').Placement = App.Placement(App.Vector(0,0,5),App.Rotation(App.Vector(0,0,1),0))
+
+### cut out grid holes
+App.activeDocument().addObject("Part::Cut","Cut")
+App.activeDocument().Cut.Base = App.activeDocument().Body
+App.activeDocument().Cut.Tool = App.activeDocument().Extrude
+Gui.activeDocument().Body.Visibility=False
+Gui.activeDocument().Extrude.Visibility=False
+App.getDocument('chamber_base').getObject('Cut').ViewObject.ShapeColor=getattr(App.getDocument('chamber_base').getObject('Body').getLinkedObject(True).ViewObject,'ShapeColor',App.getDocument('chamber_base').getObject('Cut').ViewObject.ShapeColor)
+App.getDocument('chamber_base').getObject('Cut').ViewObject.DisplayMode=getattr(App.getDocument('chamber_base').getObject('Body').getLinkedObject(True).ViewObject,'DisplayMode',App.getDocument('chamber_base').getObject('Cut').ViewObject.DisplayMode)
+App.ActiveDocument.recompute()
+
+
+
