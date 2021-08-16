@@ -4,18 +4,22 @@ from tkinter import *
 
 def cal_grid_center(cylinder_r=9,cylinder_h=15,hole_r=0.5,hole_d=1.5,angle=0,rotation=0):
 
+	# convert angle
+	rotation = rotation*math.pi/180
+	angle    = angle*math.pi/180
+
 	n = math.ceil(cylinder_r/hole_d)
-	x_grid = [x*hole_d for x in range(-n,n+1)]
+	x_grid = [x*hole_d/math.cos(angle) for x in range(-n,n+1)]
 	y_grid = x_grid
 
 	x_mm = []
 	y_mm = []
 
 
-	offset_top = cylinder_h * math.tan(angle*math.pi/180)
+	offset_top = cylinder_h * math.tan(angle)
 	for x in x_grid:
 		for y in y_grid:
-			if ((x**2 + y**2)<(cylinder_r-hole_r)**2) and (((x+offset_top*math.cos(rotation*math.pi/180))**2 + (y+offset_top*math.sin(rotation*math.pi/180))**2)<(cylinder_r-hole_r)**2):
+			if ((x**2 + y**2)<(cylinder_r-hole_r)**2) and (((x+offset_top*math.cos(rotation))**2 + (y+offset_top*math.sin(rotation))**2)<(cylinder_r-hole_r)**2):
 				x_mm.append(x)
 				y_mm.append(y)
 
