@@ -3,9 +3,9 @@ function strctGridParam = fnDefineGridModel_Generic()
 
 % Define the default 0 deg grid that has 7 holes along the major axis
 
-strctGridParam.m_fMinimumDistanceBetweenHolesMM = 1.5;
-strctGridParam.m_fGridHoleDiameterMM = 1;
-strctGridParam.m_fGridInnerDiameterMM = 17.5; % (9.9 * 2) - 2
+strctGridParam.m_fMinimumDistanceBetweenHolesMM = 0.9;
+strctGridParam.m_fGridHoleDiameterMM = 0.65;
+strctGridParam.m_fGridInnerDiameterMM = 18.6; % (9.8 * 2) - 2
 strctGridParam.m_fGridHeightMM = 15;
 strctGridParam.m_fGridHeightAboveMM = 9;
 afCenter = -9:strctGridParam.m_fMinimumDistanceBetweenHolesMM:9;
