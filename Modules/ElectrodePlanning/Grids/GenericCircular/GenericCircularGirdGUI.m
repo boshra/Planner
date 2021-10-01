@@ -871,7 +871,7 @@ strctGridName=getappdata(handles.figure1,'strctGridName');
 
 cd('FreeCAD');
 save([strctGridName '.mat'],'strctGridModel','strctGridName');
-[a, b] = system('python export_freeCAD.py', '-echo');
+[a, b] = system('freecadcmd export_freeCAD.py', '-echo');
 
 
 
