@@ -869,9 +869,17 @@ function hExportFreecad_Callback(hObject, eventdata, handles)
 strctGridModel=getappdata(handles.figure1,'strctGridModel');
 strctGridName=getappdata(handles.figure1,'strctGridName');
 
+% save to a separate struct variable
+params.hole_d   = strctGridModel.m_strctGridParams.m_fMinimumDistanceBetweenHolesMM;
+params.hole_r   = strctGridModel.m_strctGridParams.m_fGridHoleDiameterMM / 2;
+params.cylinder_r = strctGridModel.m_strctGridParams.m_fGridInnerDiameterMM / 2;
+params.angle    = strctGridModel.m_strctGridParams.m_afGridHoleTiltDeg(1);
+params.rotation = strctGridModel.m_strctGridParams.m_afGridHoleRotationDeg(1);
+
+
 cd('FreeCAD');
-save([strctGridName '.mat'],'strctGridModel','strctGridName');
-[a, b] = system('freecadcmd export_freeCAD.py', '-echo');
+save([strctGridName '.mat'],'strctGridModel','strctGridName','params');
+[a, b] = system('python export_freeCAD.py', '-echo');
 
 
 
